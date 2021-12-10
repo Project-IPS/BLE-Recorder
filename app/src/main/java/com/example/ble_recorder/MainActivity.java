@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     BluetoothAdapter bluetoothAdapter = null;
     BluetoothLeScanner bluetoothLeScanner = null;
     ScanCallback bleScanCallback = null;
-    private static final long SCAN_PERIOD = 100000;
+    private static final long SCAN_PERIOD = 100000;     //in ms
     private boolean scanning = false;
     Handler handler = new Handler();
 
