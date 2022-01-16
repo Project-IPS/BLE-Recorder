@@ -15,9 +15,11 @@
 
 using namespace std;
 
-void initializeConfiguredBeacon(int number);
+//void initializeConfiguredBeacon(int number);
 
-void removeConfiguredBeacons();
+//void removeConfiguredBeacons();
+
+bool addToConfiguredBeacons(const ConfiguredBeacon& beacon);
 
 
 #endif //BLE_RECORDER_CPP_FRAMEWORK_H

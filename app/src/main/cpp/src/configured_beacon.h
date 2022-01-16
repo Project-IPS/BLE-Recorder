@@ -35,6 +35,18 @@ public:
 	ConfiguredBeacon(const ConfiguredBeacon&) = default;
 	ConfiguredBeacon& operator=(ConfiguredBeacon&) = default;
 
+	bool operator==(const ConfiguredBeacon& beacon) const{
+		if(this->getId() == beacon.getId()){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	bool operator!=(const ConfiguredBeacon& beacon) const{
+		return !(this->operator==(beacon));
+	}
+
 	class Builder{
 	private:
 		ConfiguredBeacon* cnfg_beacon_ptr;
@@ -48,14 +60,15 @@ public:
 		Builder* setBeaconCoeff(float coeff);
 		Builder* setXSigma(float x_sig);
 		Builder* registerFilter(Filter* filter);
-		Builder* removeFilter(Filter* filter);
+
+		[[maybe_unused]] Builder* removeFilter(Filter* filter);
 		ConfiguredBeacon& build();
 		/**
 		 * This a bad function. Try to avoid using it as
 		 * it would return a back pointer and may lead to
 		 * memory leaks.
 		 */
-		ConfiguredBeacon* getConfiguredBeaconPointer() const;
+        [[maybe_unused]] ConfiguredBeacon* getConfiguredBeaconPointer() const;
 	};
 
 	int getId() const{

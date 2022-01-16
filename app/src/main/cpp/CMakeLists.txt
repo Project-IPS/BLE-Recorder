@@ -22,7 +22,15 @@ add_library( # Sets the name of the library.
              SHARED
 
              # Provides a relative path to your source file(s).
-             ble_recorder.cpp )
+             ble_recorder.cpp
+             src/configured_beacon.cpp
+             src/cpp_framework.cpp
+             src/global.cpp
+             src/trilateration.cpp
+             src/update_cycle.cpp
+             libs/scoped_thread.cpp
+             libs/thread_pool.cpp
+        )
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because CMake includes system libraries in the search path by

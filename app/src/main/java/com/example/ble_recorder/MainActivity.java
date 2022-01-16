@@ -18,9 +18,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.ble_recorder.jni_models.ConfiguredBeacon;
+
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+
+    static {
+       System.loadLibrary("ble_recorder");
+    }
 
     private static final String TAG = MainActivity.class.getName();
 
@@ -35,6 +41,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ConfiguredBeacon.Builder builder = ConfiguredBeacon.Builder.allocate();
+        ConfiguredBeacon.addToConfiguredBeacons(builder.setId(3).build());
+        ConfiguredBeacon.Builder.free(builder);
 
         checkPermissions();
         boolean result = setupBluetooth();

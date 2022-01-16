@@ -20,7 +20,12 @@ public:
      */
     virtual void update(int rssi) = 0;
 
-    int getEstimatedRssi() const{
+    virtual bool operator==(const Filter&)=0;
+	virtual bool operator!=(const Filter& filter){
+		return !(this->operator==(filter));
+	}
+
+	int getEstimatedRssi() const{
     	return estimatedRssi;
     }
 };
@@ -39,6 +44,17 @@ public:
 		}
 	}
 	~MeanFilter(){}
+
+	virtual bool operator==(const Filter& filter) override{
+		if(const MeanFilter* f = dynamic_cast<const MeanFilter*>(&filter); f!=nullptr){
+			//Executes if the Filter was indeed of type MeanFilter.
+			if(this->windowSize == f->windowSize){
+				return true;
+			}
+			return false;
+		}
+		return false;
+	}
 
 	void inline update(int rssi) override{
 

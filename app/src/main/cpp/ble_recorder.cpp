@@ -1,31 +1,12 @@
 #include <jni.h>
-#include "./src/Cpp-Framework.h"
-
-// Write C++ code here.
-//
-// Do not forget to dynamically load the C++ library into your application.
-//
-// For instance,
-//
-// In MainActivity.java:
-//    static {
-//       System.loadLibrary("ble_recorder");
-//    }
-//
-// Or, in MainActivity.kt:
-//    companion object {
-//      init {
-//         System.loadLibrary("ble_recorder")
-//      }
-//    }
+#include "./src/cpp_framework.h"
 
 /**
  * This method must allocate a ConfiguredBeacon::Builder object dynamically and return a pointer to it.
  */
 extern "C"
 JNIEXPORT jlong JNICALL
-Java_com_example_ble_1recorder_jni_1models_ConfiguredBeacon_00024Builder_jni_1allocate(JNIEnv *env,
-                                                                                       jclass clazz) {
+Java_com_example_ble_1recorder_jni_1models_ConfiguredBeacon_00024Builder_jni_1allocate([[maybe_unused]] JNIEnv *env, [[maybe_unused]] jclass clazz) {
     auto* builder_ptr = new ConfiguredBeacon::Builder();
     return (long)builder_ptr;
 }
@@ -35,9 +16,7 @@ Java_com_example_ble_1recorder_jni_1models_ConfiguredBeacon_00024Builder_jni_1al
  */
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_example_ble_1recorder_jni_1models_ConfiguredBeacon_00024Builder_jni_1free(JNIEnv *env,
-                                                                                   jclass clazz,
-                                                                                   jlong pointer) {
+Java_com_example_ble_1recorder_jni_1models_ConfiguredBeacon_00024Builder_jni_1free([[maybe_unused]] JNIEnv *env, [[maybe_unused]] jclass clazz, jlong pointer) {
     auto* builder_ptr = (ConfiguredBeacon::Builder*)pointer;
     delete builder_ptr;
 }
@@ -48,9 +27,7 @@ Java_com_example_ble_1recorder_jni_1models_ConfiguredBeacon_00024Builder_jni_1fr
  */
 extern "C"
 JNIEXPORT jlong JNICALL
-Java_com_example_ble_1recorder_jni_1models_ConfiguredBeacon_00024Builder_jni_1create(JNIEnv *env,
-                                                                                     jobject thiz,
-                                                                                     jlong pointer) {
+Java_com_example_ble_1recorder_jni_1models_ConfiguredBeacon_00024Builder_jni_1create([[maybe_unused]] JNIEnv *env, [[maybe_unused]] jobject thiz, jlong pointer) {
     auto* builder_ptr = (ConfiguredBeacon::Builder*)pointer;
     return (long)(builder_ptr->create());
 }
@@ -61,9 +38,8 @@ Java_com_example_ble_1recorder_jni_1models_ConfiguredBeacon_00024Builder_jni_1cr
  */
 extern "C"
 JNIEXPORT jlong JNICALL
-Java_com_example_ble_1recorder_jni_1models_ConfiguredBeacon_00024Builder_jni_1setId(JNIEnv *env,
-                                                                                    jobject thiz,
-                                                                                    jlong pointer,
+Java_com_example_ble_1recorder_jni_1models_ConfiguredBeacon_00024Builder_jni_1setId(
+        [[maybe_unused]] JNIEnv *env, [[maybe_unused]] jobject thiz, jlong pointer,
                                                                                     jint id) {
     auto* builder_ptr = (ConfiguredBeacon::Builder*)pointer;
     return (long)(builder_ptr->setId(id));
@@ -75,11 +51,8 @@ Java_com_example_ble_1recorder_jni_1models_ConfiguredBeacon_00024Builder_jni_1se
  */
 extern "C"
 JNIEXPORT jlong JNICALL
-Java_com_example_ble_1recorder_jni_1models_ConfiguredBeacon_00024Builder_jni_1setPos(JNIEnv *env,
-                                                                                     jobject thiz,
-                                                                                     jlong pointer,
-                                                                                     jint x, jint y,
-                                                                                     jint z) {
+Java_com_example_ble_1recorder_jni_1models_ConfiguredBeacon_00024Builder_jni_1setPos([[maybe_unused]] JNIEnv *env, [[maybe_unused]] jobject thiz, jlong pointer,
+                                                                                     jint x, jint y, jint z) {
     auto* builder_ptr = (ConfiguredBeacon::Builder*)pointer;
     return (long)(builder_ptr->setPos(x,y,z));
 }
@@ -90,9 +63,7 @@ Java_com_example_ble_1recorder_jni_1models_ConfiguredBeacon_00024Builder_jni_1se
  */
 extern "C"
 JNIEXPORT jlong JNICALL
-Java_com_example_ble_1recorder_jni_1models_ConfiguredBeacon_00024Builder_jni_1setRssiD0(JNIEnv *env,
-                                                                                        jobject thiz,
-                                                                                        jlong pointer,
+Java_com_example_ble_1recorder_jni_1models_ConfiguredBeacon_00024Builder_jni_1setRssiD0([[maybe_unused]] JNIEnv *env, [[maybe_unused]] jobject thiz, jlong pointer,
                                                                                         jint rssi) {
     auto* builder_ptr = (ConfiguredBeacon::Builder*)pointer;
     return (long)(builder_ptr->setRssiD0(rssi));
@@ -104,9 +75,7 @@ Java_com_example_ble_1recorder_jni_1models_ConfiguredBeacon_00024Builder_jni_1se
  */
 extern "C"
 JNIEXPORT jlong JNICALL
-Java_com_example_ble_1recorder_jni_1models_ConfiguredBeacon_00024Builder_jni_1setD0(JNIEnv *env,
-                                                                                    jobject thiz,
-                                                                                    jlong pointer,
+Java_com_example_ble_1recorder_jni_1models_ConfiguredBeacon_00024Builder_jni_1setD0([[maybe_unused]] JNIEnv *env, [[maybe_unused]] jobject thiz, jlong pointer,
                                                                                     jint d0) {
     auto* builder_ptr = (ConfiguredBeacon::Builder*)pointer;
     return (long)(builder_ptr->setD0(d0));
@@ -119,7 +88,7 @@ Java_com_example_ble_1recorder_jni_1models_ConfiguredBeacon_00024Builder_jni_1se
 extern "C"
 JNIEXPORT jlong JNICALL
 Java_com_example_ble_1recorder_jni_1models_ConfiguredBeacon_00024Builder_jni_1setBeaconCoeff(
-        JNIEnv *env, jobject thiz, jlong pointer, jfloat coeff) {
+        [[maybe_unused]] JNIEnv *env, [[maybe_unused]] jobject thiz, jlong pointer, jfloat coeff) {
     auto* builder_ptr = (ConfiguredBeacon::Builder*)pointer;
     return (long)(builder_ptr->setBeaconCoeff(coeff));
 }
@@ -130,9 +99,7 @@ Java_com_example_ble_1recorder_jni_1models_ConfiguredBeacon_00024Builder_jni_1se
  */
 extern "C"
 JNIEXPORT jlong JNICALL
-Java_com_example_ble_1recorder_jni_1models_ConfiguredBeacon_00024Builder_jni_1setXSigma(JNIEnv *env,
-                                                                                        jobject thiz,
-                                                                                        jlong pointer,
+Java_com_example_ble_1recorder_jni_1models_ConfiguredBeacon_00024Builder_jni_1setXSigma([[maybe_unused]] JNIEnv *env, [[maybe_unused]] jobject thiz, jlong pointer,
                                                                                         jfloat x_sig) {
     auto* builder_ptr = (ConfiguredBeacon::Builder*)pointer;
     return (long)(builder_ptr->setXSigma(x_sig));
@@ -145,7 +112,7 @@ Java_com_example_ble_1recorder_jni_1models_ConfiguredBeacon_00024Builder_jni_1se
 extern "C"
 JNIEXPORT jlong JNICALL
 Java_com_example_ble_1recorder_jni_1models_ConfiguredBeacon_00024Builder_jni_1registerFilter(
-        JNIEnv *env, jobject thiz, jlong pointer, jlong filter_ptr) {
+        [[maybe_unused]] JNIEnv *env, [[maybe_unused]] jobject thiz, jlong pointer, jlong filter_ptr) {
     auto* builder_ptr = (ConfiguredBeacon::Builder*)pointer;
     auto* filter_pointer = (Filter*)filter_ptr;
     return (long)(builder_ptr->registerFilter(filter_pointer));
@@ -158,10 +125,10 @@ Java_com_example_ble_1recorder_jni_1models_ConfiguredBeacon_00024Builder_jni_1re
 extern "C"
 JNIEXPORT jlong JNICALL
 Java_com_example_ble_1recorder_jni_1models_ConfiguredBeacon_00024Builder_jni_1removeFilter(
-        JNIEnv *env, jobject thiz, jlong pointer, jlong filter_ptr) {
+        [[maybe_unused]] JNIEnv *env, [[maybe_unused]] jobject thiz, jlong pointer, jlong filter_ptr) {
     auto* builder_ptr = (ConfiguredBeacon::Builder*)pointer;
     auto* filter_pointer = (Filter*)filter_ptr;
-    return (long)(builder_ptr->registerFilter(filter_pointer));
+    return (long)(builder_ptr->removeFilter(filter_pointer));
 }
 
 /**
@@ -170,16 +137,50 @@ Java_com_example_ble_1recorder_jni_1models_ConfiguredBeacon_00024Builder_jni_1re
  */
 extern "C"
 JNIEXPORT jlong JNICALL
-Java_com_example_ble_1recorder_jni_1models_ConfiguredBeacon_00024Builder_build(JNIEnv *env,
-                                                                               jobject thiz,
-                                                                               jlong pointer) {
+Java_com_example_ble_1recorder_jni_1models_ConfiguredBeacon_00024Builder_jni_1build([[maybe_unused]] JNIEnv *env, [[maybe_unused]] jobject thiz, jlong pointer) {
     auto* builder_ptr = (ConfiguredBeacon::Builder*)pointer;
+    //build() would return a reference to the dynamically allocated ConfigureBeacon object
+    //and this function would return the memory address of that object.
     return (long)(&builder_ptr->build());
 }
+
 extern "C"
-JNIEXPORT jint JNICALL
-Java_com_example_ble_1recorder_jni_1models_ConfiguredBeacon_00024Builder_newFunction(JNIEnv *env,
-                                                                                     jobject thiz,
-                                                                                     jlong pointer) {
-    // TODO: implement newFunction()
+JNIEXPORT jboolean JNICALL
+Java_com_example_ble_1recorder_jni_1models_ConfiguredBeacon_addToConfiguredBeacons([[maybe_unused]] JNIEnv *env, [[maybe_unused]] jclass clazz, jlong beacon_ptr) {
+    auto* configured_beacon_ptr = (ConfiguredBeacon*)beacon_ptr;
+    return addToConfiguredBeacons(*configured_beacon_ptr);
+}
+
+extern "C"
+JNIEXPORT jlong JNICALL
+Java_com_example_ble_1recorder_jni_1models_MeanFilter_jni_1allocate([[maybe_unused]] JNIEnv *env, [[maybe_unused]] jclass clazz,
+                                                                    jint window_size) {
+    auto* mean_filter_ptr = new MeanFilter(window_size);
+    return (long)mean_filter_ptr;
+}
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_example_ble_1recorder_jni_1models_MeanFilter_jni_1free([[maybe_unused]] JNIEnv *env, [[maybe_unused]] jclass clazz,
+                                                                jlong pointer) {
+    auto* mean_filter_ptr = (MeanFilter*)pointer;
+    delete mean_filter_ptr;
+}
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_example_ble_1recorder_jni_1models_Trilateration_jni_1startTrilateration(JNIEnv *env,
+                                                                                 jclass clazz) {
+    startTrilateration();
+}
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_example_ble_1recorder_jni_1models_Trilateration_jni_1stopTrilateration(JNIEnv *env,
+                                                                                jclass clazz) {
+    stopTrilateration();
+}
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_example_ble_1recorder_jni_1models_BeaconCallback_jni_1resolve(JNIEnv *env, jclass clazz,
+                                                                       jstring uuid, jint major,
+                                                                       jint minor, jint rssi) {
+    // TODO: implement jni_resolve()
 }

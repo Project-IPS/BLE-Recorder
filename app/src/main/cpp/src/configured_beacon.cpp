@@ -5,8 +5,8 @@ ConfiguredBeacon::Builder* ConfiguredBeacon::Builder::create(){
 	return this;
 }
 
-ConfiguredBeacon::Builder* ConfiguredBeacon::Builder::setId(int id){
-	cnfg_beacon_ptr -> id = id;
+ConfiguredBeacon::Builder* ConfiguredBeacon::Builder::setId(int id_){
+	cnfg_beacon_ptr -> id = id_;
 	return this;
 }
 
@@ -41,9 +41,13 @@ ConfiguredBeacon::Builder* ConfiguredBeacon::Builder::registerFilter(Filter* fil
 }
 
 ConfiguredBeacon::Builder* ConfiguredBeacon::Builder::removeFilter(Filter* filter){
-	auto iterator = find((cnfg_beacon_ptr -> filters).begin(),(cnfg_beacon_ptr -> filters).end(),filter);
+	auto iterator = find_if((cnfg_beacon_ptr -> filters).begin(),(cnfg_beacon_ptr -> filters).end(),[filter](Filter * f){
+	    return (*filter) == (*f);
+	});
 	if(iterator!= (cnfg_beacon_ptr -> filters).end()){
 		(cnfg_beacon_ptr -> filters).erase(iterator);
+		//The filter needs to be deleted since it was
+		delete *iterator;
 	}
 	//what otherwise
 	return this;
@@ -53,6 +57,6 @@ ConfiguredBeacon& ConfiguredBeacon::Builder::build(){
 	return *cnfg_beacon_ptr;
 }
 
-ConfiguredBeacon* ConfiguredBeacon::Builder::getConfiguredBeaconPointer() const{
+[[maybe_unused]] ConfiguredBeacon* ConfiguredBeacon::Builder::getConfiguredBeaconPointer() const{
 	return cnfg_beacon_ptr;
 }
