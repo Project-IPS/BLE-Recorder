@@ -1,12 +1,16 @@
 #include"configured_beacon.h"
 
+#include <utility>
+
 ConfiguredBeacon::Builder* ConfiguredBeacon::Builder::create(){
 	cnfg_beacon_ptr = new ConfiguredBeacon();
 	return this;
 }
 
-ConfiguredBeacon::Builder* ConfiguredBeacon::Builder::setId(int id_){
-	cnfg_beacon_ptr -> id = id_;
+ConfiguredBeacon::Builder* ConfiguredBeacon::Builder::setId(string uuid_, int major_, int minor_){
+	cnfg_beacon_ptr -> uuid = std::move(uuid_);
+	cnfg_beacon_ptr -> major = major_;
+	cnfg_beacon_ptr -> minor = minor_;
 	return this;
 }
 
@@ -35,8 +39,13 @@ ConfiguredBeacon::Builder* ConfiguredBeacon::Builder::setXSigma(float x_sig){
 	return this;
 }
 
-ConfiguredBeacon::Builder* ConfiguredBeacon::Builder::registerFilter(Filter* filter){
-	(cnfg_beacon_ptr -> filters).push_back(filter);
+ConfiguredBeacon::Builder* ConfiguredBeacon::Builder::registerFilter(const Filter* filter){
+	//A copy of the filter should be made here because the filter object is deleted
+	//dynamically from java.
+	if(const auto* f = dynamic_cast<const MeanFilter*>(filter); f!=nullptr) {
+		//Executes if the Filter was indeed of type MeanFilter.
+		(cnfg_beacon_ptr->filters).push_back(new MeanFilter{*f});
+	}
 	return this;
 }
 
@@ -59,4 +68,8 @@ ConfiguredBeacon& ConfiguredBeacon::Builder::build(){
 
 [[maybe_unused]] ConfiguredBeacon* ConfiguredBeacon::Builder::getConfiguredBeaconPointer() const{
 	return cnfg_beacon_ptr;
+}
+
+string ConfiguredBeacon::toString() const {
+	return "ConfiguredBeacon{"+uuid+", "+to_string(major)+", "+to_string(minor)+"}";
 }

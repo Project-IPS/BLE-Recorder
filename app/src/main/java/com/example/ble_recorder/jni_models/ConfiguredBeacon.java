@@ -16,11 +16,7 @@ public class ConfiguredBeacon {
      */
     private static native boolean addToConfiguredBeacons(long beacon_ptr);
 
-//    /**
-//     * This function would remove all the ConfiguredBeacons
-//     */
-//    private static native void removeAllConfiguredBeacons();
-
+@SuppressWarnings("UnusedReturnValue")
     public static boolean addToConfiguredBeacons(ConfiguredBeacon beacon){
         return addToConfiguredBeacons(beacon.cnfg_beacon_ptr);
     }
@@ -53,7 +49,7 @@ public class ConfiguredBeacon {
          * and return a pointer to it.
          * @return a pointer to the updated builder object(same as 'this').
          */
-        private native long jni_setId(long pointer, int id);
+        private native long jni_setId(long pointer, String uuid, int major, int minor);
 
         /**
          * This method must call the setPos() method of the underlying ConfiguredBeacon::Builder object
@@ -124,8 +120,8 @@ public class ConfiguredBeacon {
             jni_free(builder.builder_ptr);
         }
 
-        public Builder setId(int id){
-            jni_setId(builder_ptr, id);
+        public Builder setId(String uuid, int major, int minor){
+            jni_setId(builder_ptr, uuid, major, minor);
             return this;
         }
 
@@ -154,11 +150,13 @@ public class ConfiguredBeacon {
             return this;
         }
 
+        @SuppressWarnings("UnusedReturnValue")
         public Builder registerFilter(Filter f){
             jni_registerFilter(builder_ptr, f.getPointer());
             return this;
         }
 
+        @SuppressWarnings("unused")
         public Builder removeFilter(Filter f){
             jni_removeFilter(builder_ptr, f.getPointer());
             return this;

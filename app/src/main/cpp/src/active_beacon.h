@@ -44,8 +44,8 @@ public:
 	ActiveBeacon(ActiveBeacon&&) = default;
 	ActiveBeacon& operator=(ActiveBeacon&&) = default;
 
-	void inline setRssi(int rssi){
-		this->rssi = rssi;
+	void inline setRssi(int rssi_){
+		this->rssi = rssi_;
 		resetInactiveFlag();
 		notifyFilters();
 	}
@@ -72,8 +72,16 @@ public:
 		return rssi;	//if no filters return the measured value
 	}
 
-	int inline getId() const{
-		return cnfg_beacon_ptr->getId();
+	string inline getUuid() const{
+		return cnfg_beacon_ptr->getUuid();
+	}
+
+	int inline getMajor() const{
+		return cnfg_beacon_ptr->getMajor();
+	}
+
+	int inline getMinor() const{
+		return cnfg_beacon_ptr->getMinor();
 	}
 
 	Position inline getPosition() const{

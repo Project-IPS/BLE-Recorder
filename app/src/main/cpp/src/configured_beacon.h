@@ -14,15 +14,17 @@ class ConfiguredBeacon{
 protected:
 	int rssi_d0;
 	int d0;
-	int id;
+	string uuid;
+	int major;
+	int minor;
 	Position pos;
-	float beacon_coeff;
+	[[maybe_unused]] float beacon_coeff;
 	float x_sigma;
 	vector<Filter *> filters; 	// filter observers
 	ConfiguredBeacon* next = nullptr;		//for chaining - maybe.
 								//Not required if HashTable is a separate class.
 
-	ConfiguredBeacon():rssi_d0{DEFAULT_RSSI_D0}, d0{DEFAULT_D0}, id{-1}, pos{DEFAULT_POS}, beacon_coeff{DEFAULT_BEACON_COEFF},
+	ConfiguredBeacon():rssi_d0{DEFAULT_RSSI_D0}, d0{DEFAULT_D0}, uuid{""}, major{-1}, minor{-1}, pos{DEFAULT_POS}, beacon_coeff{DEFAULT_BEACON_COEFF},
 			x_sigma{DEFAULT_X_SIGMA}, next{nullptr}{}
 
 	//Moving a ConfiguredBeacon would delete the vector of filters in the original object.
@@ -36,7 +38,7 @@ public:
 	ConfiguredBeacon& operator=(ConfiguredBeacon&) = default;
 
 	bool operator==(const ConfiguredBeacon& beacon) const{
-		if(this->getId() == beacon.getId()){
+		if((this->getUuid() == beacon.getUuid())&&(this->getMajor() == beacon.getMajor())&&(this->getMinor() == beacon.getMinor())){
 			return true;
 		}
 		else{
@@ -53,13 +55,13 @@ public:
 
 	public:
 		Builder* create();
-		Builder* setId(int id);
+		Builder* setId(string uuid, int major, int minor);
 		Builder* setPos(int x, int y, int z);
 		Builder* setRssiD0(int rssi);
 		Builder* setD0(int d);
 		Builder* setBeaconCoeff(float coeff);
 		Builder* setXSigma(float x_sig);
-		Builder* registerFilter(Filter* filter);
+		Builder* registerFilter(const Filter* filter);
 
 		[[maybe_unused]] Builder* removeFilter(Filter* filter);
 		ConfiguredBeacon& build();
@@ -71,11 +73,19 @@ public:
         [[maybe_unused]] ConfiguredBeacon* getConfiguredBeaconPointer() const;
 	};
 
-	int getId() const{
-		return id;
+	string getUuid() const{
+		return uuid;
 	}
 
-	ConfiguredBeacon* getNext() const{
+	int getMajor() const{
+		return major;
+	}
+
+	int getMinor() const{
+		return minor;
+	}
+
+	[[ maybe_unused ]] ConfiguredBeacon* getNext() const{
 		return next;		//Inside the hash function this pointer can be checked as not null
 	}
 
@@ -86,6 +96,8 @@ public:
 	Position getPosition() const{
 		return pos;
 	}
+
+	string toString() const;
 };
 
 extern vector<ConfiguredBeacon> configured_beacons;

@@ -10,9 +10,13 @@ class Filter{
 
 protected:
 	int estimatedRssi;
+	Filter(){}
 
 public:
 	virtual ~Filter(){}
+
+	Filter(const Filter&) = default;
+	Filter& operator=(const Filter&) = default;
 
     /**
      * Update the state of this filter observer

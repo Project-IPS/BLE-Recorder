@@ -11,7 +11,7 @@ void stopTrilateration();
 
 void inline asynchronous_reader(){
 	while(true){
-		cout<<"Asynchronous Reader called"<<endl;
+		LOGI("Asynchronous Reader called");
 
 		unique_lock<mutex> lock(updateQueueMutex);
 		newUpdateCycleReady.wait(lock,[](){
@@ -26,7 +26,7 @@ void inline asynchronous_reader(){
 
 		shared_lock<shared_mutex> lock2(trilaterationMutex);
 		if(!isTrilaterationActive){
-			cout<<"Exiting Asynchronous reader"<<endl;
+			LOGI("Exiting Asynchronous reader");
 			lock2.unlock();
 			break;
 		}
@@ -34,7 +34,7 @@ void inline asynchronous_reader(){
 
 		if(update_queue.size()>MAX_UPDATE_CYCLES_IN_QUEUE){
 			while(update_queue.size()>1){
-				cout<<"Popping update cycle"<<endl;
+				LOGI("Popping update cycle");
 				update_queue.pop();
 			}
 		}
@@ -43,8 +43,7 @@ void inline asynchronous_reader(){
 		update_queue.pop();
 		lock.unlock();
 
-		string str = "Running Reader on current update cycle: "+currentUpdateCycle.toString();
-		cout<<str<<endl;
+		LOGI("Running Reader on current update cycle: %s",currentUpdateCycle.toString().c_str());
 
 		//pass current update cycle to trilateration/multilateration function.
 	}

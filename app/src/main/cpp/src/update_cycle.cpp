@@ -6,7 +6,7 @@ queue<UpdateCycle> update_queue;
 mutex updateQueueMutex;
 condition_variable newUpdateCycleReady;
 
-void UpdateCycle::addEntry(Entry entry){
+void UpdateCycle::addEntry(const Entry& entry){
 	if(no_of_entries == 0){
 		update_cycle.push_front(entry);
 		no_of_entries++;
@@ -20,7 +20,7 @@ void UpdateCycle::addEntry(Entry entry){
 	}
 
 	auto it = update_cycle.begin();
-	auto temp = it;
+	forward_list<Entry>::iterator temp;
 	while(true){
 		temp=it;
 		it++;
@@ -39,7 +39,7 @@ void UpdateCycle::addEntry(Entry entry){
 //	no_of_entries++;
 }
 
-void UpdateCycle::insert(Entry entry){
+void UpdateCycle::insert(const Entry& entry){
 	if(no_of_entries<3){
 		addEntry(entry);
 		return;
@@ -59,7 +59,7 @@ void UpdateCycle::generateUpdateCycle(vector<ActiveBeacon>& beacons){
 		str+=beac.toString()+",";
 	}
 	str+="]";
-	cout<<str<<endl;
+	LOGI("%s",str.c_str());
 
 	UpdateCycle update_cycle;
 	for(auto it = beacons.begin(); it!=beacons.end();){
@@ -67,15 +67,15 @@ void UpdateCycle::generateUpdateCycle(vector<ActiveBeacon>& beacons){
 			it = beacons.erase(it);
 			continue;
 		}
-		cout<<"Update Cycle' : "<<endl;
-		cout<<update_cycle.toString()<<endl;
+		LOGI("Update Cycle' : ");
+		LOGI("%s",update_cycle.toString().c_str());
 		it->updateInactiveFlag();
 		Entry new_entry{(it->getEstimatedRssi()),(it->getPosition())};
 		update_cycle.insert(new_entry);
 		it++;
 	}
-	cout<<"Update Cycle : "<<endl;
-	cout<<update_cycle.toString()<<endl;
+	LOGI("Update Cycle : ");
+	LOGI("%s",update_cycle.toString().c_str());
 	//put update cycle into queue.
 	unique_lock<mutex> lock(updateQueueMutex);
 	update_queue.push(update_cycle);
@@ -86,7 +86,7 @@ void UpdateCycle::generateUpdateCycle(vector<ActiveBeacon>& beacons){
 string UpdateCycle::toString(){
 	string str = "[";
 	if(!update_cycle.empty()){
-		for(Entry entry : update_cycle){
+		for(const Entry& entry : update_cycle){
 			str += entry.toString()+",";
 		}
 	}

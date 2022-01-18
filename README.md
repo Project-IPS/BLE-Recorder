@@ -1,5 +1,22 @@
 Commit History
 ==============
+## Java interface is functional
+As of this commit the Java interface is functional and tested. Though the inherent C++ code is still lacking 
+two major functions: path-loss model and trilateration function.
+1. Updates
+   - Entire C++ code was cleaned and tailored. beacon_sim.h and beacon_sim.cpp was deleted. Only the necessary 
+   C++ files are included now.
+   - sim/BeaconSim.java was created to simulate the asynchronous callbacks from realtime beacons.
+   - Real Beacon Scanning was commented out in the MainActivity. Instead Simulated Scanning was setup.
+   - Changes were made in almost every Cpp file but most notably inside resolver.h, active_beacon.h(cpp),
+   configured_beacon.h(cpp), ble_recorder.cpp and filter.h and global.h.
+   - All the cout statements were replaced with LOGI(...).
+   - Inside jni_models only ConfiguredBeacon.java was changed viz. the setId() method.
+2. TODOs
+   - Add distance estimation and trilateration function when ready.
+   - Add the matrix c++ libraries.
+   - Add the Dead Reckoning logic.
+   
 ## Java interface for native code is complete
 As of this commit the java interface for the native code is complete though its not tested.
 1. Updates

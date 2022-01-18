@@ -6,6 +6,11 @@
 #include "beacon_callback.h"
 #include"position.h"
 #include<shared_mutex>
+#include <android/log.h>
+#ifdef LOGI
+#undef LOGI
+#endif
+#define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, "native-lib::", __VA_ARGS__))
 
 using namespace std;
 

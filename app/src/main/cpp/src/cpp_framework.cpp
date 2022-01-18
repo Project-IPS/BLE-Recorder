@@ -37,18 +37,21 @@ shared_mutex activeBeaconMutex;
 bool addToConfiguredBeacons(const ConfiguredBeacon& configured_beacon){
 	for(const ConfiguredBeacon& beacon : configured_beacons){
 		if(beacon == configured_beacon){
-			//There is already a beacon with the same Id;
+			LOGI("There is already beacon with the same id");
 			return false;
 		}
 	}
+	//The Beacon object is dynamically deleted from Java so make
+	//sure that a copy is made here.
 	configured_beacons.push_back(configured_beacon);
+    LOGI("Beacon Added : %s",configured_beacon.toString().c_str());
 	return true;
 }
 
 //void removeConfiguredBeacons(){
 //	for(ConfiguredBeacon& configured_beacon : configured_beacons){
 //		for(Filter* filter : configured_beacon.getFilters()){
-//			delete filter;				//Filters were allocated using new so they need to be de-alllocated using
+//			delete filter;				//Filters were allocated using new so they need to be de-allocated using
 //										//delete.
 //		}
 //		delete &configured_beacon;		//The objects in the configured_beacons vector were allocated using new so

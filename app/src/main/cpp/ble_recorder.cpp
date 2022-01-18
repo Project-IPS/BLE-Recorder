@@ -1,5 +1,6 @@
 #include <jni.h>
 #include "./src/cpp_framework.h"
+#include "./src/resolver.h"
 
 /**
  * This method must allocate a ConfiguredBeacon::Builder object dynamically and return a pointer to it.
@@ -40,9 +41,12 @@ extern "C"
 JNIEXPORT jlong JNICALL
 Java_com_example_ble_1recorder_jni_1models_ConfiguredBeacon_00024Builder_jni_1setId(
         [[maybe_unused]] JNIEnv *env, [[maybe_unused]] jobject thiz, jlong pointer,
-                                                                                    jint id) {
+                                                                                    jstring uuid, jint major, jint minor) {
     auto* builder_ptr = (ConfiguredBeacon::Builder*)pointer;
-    return (long)(builder_ptr->setId(id));
+    const char* str = env->GetStringUTFChars(uuid,nullptr);
+    string id = str;
+    env->ReleaseStringUTFChars(uuid,str);
+    return (long)(builder_ptr->setId(id,major,minor));
 }
 
 /**
@@ -167,20 +171,24 @@ Java_com_example_ble_1recorder_jni_1models_MeanFilter_jni_1free([[maybe_unused]]
 }
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_example_ble_1recorder_jni_1models_Trilateration_jni_1startTrilateration(JNIEnv *env,
-                                                                                 jclass clazz) {
+Java_com_example_ble_1recorder_jni_1models_Trilateration_jni_1startTrilateration([[maybe_unused]] JNIEnv *env, [[maybe_unused]] jclass clazz) {
     startTrilateration();
 }
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_example_ble_1recorder_jni_1models_Trilateration_jni_1stopTrilateration(JNIEnv *env,
-                                                                                jclass clazz) {
+Java_com_example_ble_1recorder_jni_1models_Trilateration_jni_1stopTrilateration([[maybe_unused]] JNIEnv *env, [[maybe_unused]] jclass clazz) {
     stopTrilateration();
 }
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_example_ble_1recorder_jni_1models_BeaconCallback_jni_1resolve(JNIEnv *env, jclass clazz,
+Java_com_example_ble_1recorder_jni_1models_BeaconCallback_jni_1resolve(JNIEnv *env, [[maybe_unused]] jclass clazz,
                                                                        jstring uuid, jint major,
                                                                        jint minor, jint rssi) {
-    // TODO: implement jni_resolve()
+
+    const char *str = env->GetStringUTFChars(uuid , nullptr);
+    string id = str;
+    pool.post([id,major,minor,rssi]{
+        resolve(id,major,minor,rssi);
+    });
+    env->ReleaseStringUTFChars(uuid, str);
 }

@@ -9,7 +9,6 @@
 #include<vector>
 #include<utility>
 #include"configured_beacon.h"
-#include"beacon_sim.h"
 #include"active_beacon.h"
 #include "trilateration.h"
 
@@ -21,5 +20,4 @@ using namespace std;
 
 bool addToConfiguredBeacons(const ConfiguredBeacon& beacon);
 
-
-#endif //BLE_RECORDER_CPP_FRAMEWORK_H
+#endif //CPP_FRAMEWORK_H

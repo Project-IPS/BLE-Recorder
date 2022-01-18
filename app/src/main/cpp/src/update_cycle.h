@@ -49,12 +49,12 @@ private:
 	/**
 	 * Contains logic for insertion into the update_cycle
 	 */
-	void insert(Entry entry);
+	void insert(const Entry& entry);
 
 	/**
 	 * For insertion sort into the list.
 	 */
-	void addEntry(Entry entry);
+	void addEntry(const Entry& entry);
 
 	UpdateCycle():no_of_entries{0}{}
 
