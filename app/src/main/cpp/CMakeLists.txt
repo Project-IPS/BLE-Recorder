@@ -27,6 +27,7 @@ add_library( # Sets the name of the library.
              src/cpp_framework.cpp
              src/global.cpp
              src/trilateration.cpp
+             src/dead_reckoning.cpp
              src/update_cycle.cpp
              libs/scoped_thread.cpp
              libs/thread_pool.cpp

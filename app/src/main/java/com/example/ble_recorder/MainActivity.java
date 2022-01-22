@@ -1,5 +1,8 @@
 package com.example.ble_recorder;
 
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -9,6 +12,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.ble_recorder.jni_models.ConfiguredBeacon;
+import com.example.ble_recorder.jni_models.DRListener;
 import com.example.ble_recorder.jni_models.MeanFilter;
 import com.example.ble_recorder.jni_models.Trilateration;
 import com.example.ble_recorder.sim.BeaconSim;
@@ -22,8 +26,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private static final String TAG = MainActivity.class.getName();
-
+    private SensorManager sensorManager;
+    private Sensor gravitySensor;
+    private Sensor magnetometerSensor;
+    private Sensor stepDetectorSensor;
     Vector<BeaconSim> beaconSims = new Vector<>();
+    DRListener drListener;
 
 //    //For Real Scanning
 //    BluetoothAdapter bluetoothAdapter = null;
@@ -36,12 +44,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.dr_view);
 
         Log.d(TAG, "onCreate()");
-        initializeConfiguredBeacons();
-        initializeBeaconSims();
-        startSimulating(3);
+//        initializeConfiguredBeacons();
+//        initializeBeaconSims();
+//        startSimulating(3);
+
+        initializeDeadReckoning();
 //        //For Real Scanning
 //        checkPermissions();
 //        boolean result = setupBluetooth();
@@ -50,6 +60,18 @@ public class MainActivity extends AppCompatActivity {
 //            setScanCallback();
 //            scanLeDevice();
 //        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerSensorListeners();
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        unregisterListeners();
     }
 
     @Override
@@ -166,6 +188,24 @@ public class MainActivity extends AppCompatActivity {
 //            bluetoothLeScanner.stopScan(bleScanCallback);
 //        }
 //    }
+
+    public void initializeDeadReckoning(){
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        gravitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
+        magnetometerSensor = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+        stepDetectorSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
+        drListener = DRListener.initializeDR(this, 0,0,0);
+    }
+
+    public void registerSensorListeners(){
+        sensorManager.registerListener(drListener,stepDetectorSensor,SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(drListener, gravitySensor, SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(drListener,magnetometerSensor,SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    public void unregisterListeners(){
+        sensorManager.unregisterListener(drListener);
+    }
 
     public void initializeConfiguredBeacons(){
         for (int i = 0; i < 10; i++) {

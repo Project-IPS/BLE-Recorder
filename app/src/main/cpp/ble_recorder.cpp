@@ -192,3 +192,19 @@ Java_com_example_ble_1recorder_jni_1models_BeaconCallback_jni_1resolve(JNIEnv *e
     });
     env->ReleaseStringUTFChars(uuid, str);
 }
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_example_ble_1recorder_jni_1models_DRListener_onStepDetected(JNIEnv *env, [[ maybe_unused ]] jobject thiz,
+                                                                     jfloatArray rot_array) {
+    int len = env-> GetArrayLength(rot_array);
+    float carray[len];
+    env->GetFloatArrayRegion(rot_array,0,len,carray);
+    onStepDetected(carray);
+}
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_example_ble_1recorder_jni_1models_DRListener_jni_1initializeDR([[ maybe_unused ]] JNIEnv *env, [[ maybe_unused ]] jclass clazz,
+                                                                        jint x, jint y, jint z) {
+    initializeDeadReckoning(x,y,z);
+}

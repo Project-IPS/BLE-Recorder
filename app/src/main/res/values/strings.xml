@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">BLE-Recorder</string>
+    <string name="rotation_matrix_view">Rotation Matrix :</string>
+    <string name="default_value_view">[]</string>
+    <string name="gravity_view">Gravity :</string>
+    <string name="magnetometer_view">Magnetometer :</string>
+    <string name="calibrate_mag">Sensor needs Calibration</string>
 </resources>

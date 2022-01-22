@@ -1,5 +1,24 @@
 Commit History
 ==============
+## Dead Reckoning (Basic Step Detection Model) is set and tested.
+As of this commit, dead reckoning is functional. Though fusion with Trilateration is not possible as of now.
+1. Updates
+   - Fixed a bug in position.h (string library was not included).
+   - Added a jni_model for DRListener. It marshals the sensor callbacks from Java to C++.
+   - Trilateration test in MainActivity.java was commented out and a DR test was written.
+   - The current algo for DR is here: https://miro.com/app/board/uXjVObl7Dyc=/
+   - The current algo for DR works for a predefined constant step length L and if the user is heading
+   along the  y-axis of the phone(normal way to hold a phone).
+   - Sensor values for magnetometer are only accepted when they are reliable.
+   - A dr_view.xml was added so that a tester can see at runtime what the DRListener is doing under the hood.
+2. TODOs
+   - Prompt the user to calibrate phone's magnetometer(figure 8 movement) when the accuracy is low  or 
+     unreliable.
+   - Implement the fusion of DR and Trilateration.
+   - Make the DR algo such that it can deduce step length at runtime.
+   - Add distance estimation and trilateration function when ready.
+   - Add the matrix c++ libraries.
+
 ## Java interface is functional
 As of this commit the Java interface is functional and tested. Though the inherent C++ code is still lacking 
 two major functions: path-loss model and trilateration function.

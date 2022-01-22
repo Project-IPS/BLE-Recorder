@@ -11,6 +11,7 @@
 #include"configured_beacon.h"
 #include"active_beacon.h"
 #include "trilateration.h"
+#include "dead_reckoning.h"
 
 using namespace std;
 
